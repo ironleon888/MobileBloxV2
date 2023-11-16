@@ -1,0 +1,441 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|ARM">
+      <Configuration>Debug</Configuration>
+      <Platform>ARM</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|ARM">
+      <Configuration>Release</Configuration>
+      <Platform>ARM</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x86">
+      <Configuration>Debug</Configuration>
+      <Platform>x86</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x86">
+      <Configuration>Release</Configuration>
+      <Platform>x86</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{e9263837-2972-407b-9714-28426b538c4a}</ProjectGuid>
+    <Keyword>Android</Keyword>
+    <RootNamespace>MobileBloxV2</RootNamespace>
+    <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
+    <ApplicationType>Android</ApplicationType>
+    <ApplicationTypeRevision>3.0</ApplicationTypeRevision>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>Clang_5_0</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>Clang_5_0</PlatformToolset>
+    <AndroidAPILevel>android-21</AndroidAPILevel>
+    <UseOfStl>c++_shared</UseOfStl>
+    <ThumbMode>ARM</ThumbMode>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>Clang_5_0</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>Clang_5_0</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>Clang_5_0</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>Clang_5_0</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings" />
+  <ImportGroup Label="Shared" />
+  <ImportGroup Label="PropertySheets" />
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
+    <TargetName>libMobileBlox</TargetName>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.hpp</PrecompiledHeaderFile>
+      <ExceptionHandling>Enabled</ExceptionHandling>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <CppLanguageStandard>c++1z</CppLanguageStandard>
+      <AdditionalIncludeDirectories>$(StlIncludeDirectories);$(Sysroot)\usr\include;$(Sysroot)\usr\include\$(AndroidHeaderTriple);$(VS_NdkRoot)\sources\android\support\include;%(AdditionalIncludeDirectories);$(MSBuildProjectDirectory)/dependencies/luau/VM/include;$(MSBuildProjectDirectory)/dependencies/luau/VM/src;$(MSBuildProjectDirectory)/dependencies/luau/Ast/include;$(MSBuildProjectDirectory)/dependencies/luau/Compiler/include;$(MSBuildProjectDirectory)/dependencies/luau/Common/include;$(MSBuildProjectDirectory)/dependencies;$(MSBuildProjectDirectory)/dependencies/lz4;$(MSBuildProjectDirectory)/dependencies/imgui;$(MSBuildProjectDirectory)/dependencies/cpr;$(MSBuildProjectDirectory)/dependencies/curl;</AdditionalIncludeDirectories>
+      <CLanguageStandard>c11</CLanguageStandard>
+      <DebugInformationFormat>None</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);$(ToolchainPrebuiltPath)\lib\gcc\$(ToolchainName)\$(ToolchainFullVersionName)\$(PlatformShortName);$(StlLibraryPath);$(MSBuildProjectDirectory)/dependencies/dobby/armeabi-v7a;$(MSBuildProjectDirectory)/dependencies/curl/armeabi-v7a;</AdditionalLibraryDirectories>
+      <LibraryDependencies>$(StlLibraryName);%(LibraryDependencies);dobby;z;c;c++;m;EGL;GLESv3;crypto_static;curl_static;nghttp2_static;nghttp3_static;ngtcp2_crypto_static;ngtcp2_static;ssl_static;</LibraryDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="callcheck\callcheck.cpp" />
+    <ClCompile Include="dependencies\cpr\auth.cpp" />
+    <ClCompile Include="dependencies\cpr\cookies.cpp" />
+    <ClCompile Include="dependencies\cpr\cprtypes.cpp" />
+    <ClCompile Include="dependencies\cpr\digest.cpp" />
+    <ClCompile Include="dependencies\cpr\error.cpp" />
+    <ClCompile Include="dependencies\cpr\multipart.cpp" />
+    <ClCompile Include="dependencies\cpr\parameters.cpp" />
+    <ClCompile Include="dependencies\cpr\payload.cpp" />
+    <ClCompile Include="dependencies\cpr\proxies.cpp" />
+    <ClCompile Include="dependencies\cpr\session.cpp" />
+    <ClCompile Include="dependencies\cpr\ssl_options.cpp" />
+    <ClCompile Include="dependencies\cpr\timeout.cpp" />
+    <ClCompile Include="dependencies\cpr\util.cpp" />
+    <ClCompile Include="dependencies\imgui\backends\imgui_impl_android.cpp" />
+    <ClCompile Include="dependencies\imgui\backends\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="dependencies\imgui\imgui.cpp" />
+    <ClCompile Include="dependencies\imgui\imgui_demo.cpp" />
+    <ClCompile Include="dependencies\imgui\imgui_draw.cpp" />
+    <ClCompile Include="dependencies\imgui\imgui_tables.cpp" />
+    <ClCompile Include="dependencies\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="dependencies\ixwebsocket\IXBench.cpp" />
+    <ClCompile Include="dependencies\ixwebsocket\IXCancellationRequest.cpp" />
+    <ClCompile Include="dependencies\ixwebsocket\IXConnectionState.cpp" />
+    <ClCompile Include="dependencies\ixwebsocket\IXDNSLookup.cpp" />
+    <ClCompile Include="dependencies\ixwebsocket\IXExponentialBackoff.cpp" />
+    <ClCompile Include="dependencies\ixwebsocket\IXGetFreePort.cpp" />
+    <ClCompile Include="dependencies\ixwebsocket\IXGzipCodec.cpp" />
+    <ClCompile Include="dependencies\ixwebsocket\IXHttp.cpp" />
+    <ClCompile Include="dependencies\ixwebsocket\IXHttpClient.cpp" />
+    <ClCompile Include="dependencies\ixwebsocket\IXHttpServer.cpp" />
+    <ClCompile Include="dependencies\ixwebsocket\IXNetSystem.cpp" />
+    <ClCompile Include="dependencies\ixwebsocket\IXSelectInterrupt.cpp" />
+    <ClCompile Include="dependencies\ixwebsocket\IXSelectInterruptEvent.cpp" />
+    <ClCompile Include="dependencies\ixwebsocket\IXSelectInterruptFactory.cpp" />
+    <ClCompile Include="dependencies\ixwebsocket\IXSelectInterruptPipe.cpp" />
+    <ClCompile Include="dependencies\ixwebsocket\IXSetThreadName.cpp" />
+    <ClCompile Include="dependencies\ixwebsocket\IXSocket.cpp" />
+    <ClCompile Include="dependencies\ixwebsocket\IXSocketAppleSSL.cpp" />
+    <ClCompile Include="dependencies\ixwebsocket\IXSocketConnect.cpp" />
+    <ClCompile Include="dependencies\ixwebsocket\IXSocketFactory.cpp" />
+    <ClCompile Include="dependencies\ixwebsocket\IXSocketMbedTLS.cpp" />
+    <ClCompile Include="dependencies\ixwebsocket\IXSocketOpenSSL.cpp" />
+    <ClCompile Include="dependencies\ixwebsocket\IXSocketServer.cpp" />
+    <ClCompile Include="dependencies\ixwebsocket\IXSocketTLSOptions.cpp" />
+    <ClCompile Include="dependencies\ixwebsocket\IXStrCaseCompare.cpp" />
+    <ClCompile Include="dependencies\ixwebsocket\IXUdpSocket.cpp" />
+    <ClCompile Include="dependencies\ixwebsocket\IXUrlParser.cpp" />
+    <ClCompile Include="dependencies\ixwebsocket\IXUserAgent.cpp" />
+    <ClCompile Include="dependencies\ixwebsocket\IXUuid.cpp" />
+    <ClCompile Include="dependencies\ixwebsocket\IXWebSocket.cpp" />
+    <ClCompile Include="dependencies\ixwebsocket\IXWebSocketCloseConstants.cpp" />
+    <ClCompile Include="dependencies\ixwebsocket\IXWebSocketHandshake.cpp" />
+    <ClCompile Include="dependencies\ixwebsocket\IXWebSocketHttpHeaders.cpp" />
+    <ClCompile Include="dependencies\ixwebsocket\IXWebSocketPerMessageDeflate.cpp" />
+    <ClCompile Include="dependencies\ixwebsocket\IXWebSocketPerMessageDeflateCodec.cpp" />
+    <ClCompile Include="dependencies\ixwebsocket\IXWebSocketPerMessageDeflateOptions.cpp" />
+    <ClCompile Include="dependencies\ixwebsocket\IXWebSocketProxyServer.cpp" />
+    <ClCompile Include="dependencies\ixwebsocket\IXWebSocketServer.cpp" />
+    <ClCompile Include="dependencies\ixwebsocket\IXWebSocketTransport.cpp" />
+    <ClCompile Include="dependencies\luau\VM\src\lbuffer.cpp" />
+    <ClCompile Include="dependencies\luau\VM\src\lbuflib.cpp" />
+    <ClCompile Include="dependencies\lz4\lz4.cpp" />
+    <ClCompile Include="environment\environment.cpp" />
+    <ClCompile Include="environment\libraries\closure.cpp" />
+    <ClCompile Include="environment\libraries\debug.cpp" />
+    <ClCompile Include="environment\libraries\misc.cpp" />
+    <ClCompile Include="environment\libraries\reflection.cpp" />
+    <ClCompile Include="environment\libraries\websocket.cpp" />
+    <ClCompile Include="execution\execution.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="exploit.cpp" />
+    <ClCompile Include="dependencies\luau\Ast\src\Ast.cpp" />
+    <ClCompile Include="dependencies\luau\Ast\src\Confusables.cpp" />
+    <ClCompile Include="dependencies\luau\Ast\src\Lexer.cpp" />
+    <ClCompile Include="dependencies\luau\Ast\src\Location.cpp" />
+    <ClCompile Include="dependencies\luau\Ast\src\Parser.cpp" />
+    <ClCompile Include="dependencies\luau\Ast\src\StringUtils.cpp" />
+    <ClCompile Include="dependencies\luau\Ast\src\TimeTrace.cpp" />
+    <ClCompile Include="dependencies\luau\Compiler\src\BuiltinFolding.cpp" />
+    <ClCompile Include="dependencies\luau\Compiler\src\Builtins.cpp" />
+    <ClCompile Include="dependencies\luau\Compiler\src\BytecodeBuilder.cpp" />
+    <ClCompile Include="dependencies\luau\Compiler\src\Compiler.cpp" />
+    <ClCompile Include="dependencies\luau\Compiler\src\ConstantFolding.cpp" />
+    <ClCompile Include="dependencies\luau\Compiler\src\CostModel.cpp" />
+    <ClCompile Include="dependencies\luau\Compiler\src\lcode.cpp" />
+    <ClCompile Include="dependencies\luau\Compiler\src\TableShape.cpp" />
+    <ClCompile Include="dependencies\luau\Compiler\src\Types.cpp" />
+    <ClCompile Include="dependencies\luau\Compiler\src\ValueTracking.cpp" />
+    <ClCompile Include="dependencies\luau\VM\src\lapi.cpp" />
+    <ClCompile Include="dependencies\luau\VM\src\laux.cpp" />
+    <ClCompile Include="dependencies\luau\VM\src\lbaselib.cpp" />
+    <ClCompile Include="dependencies\luau\VM\src\lbitlib.cpp" />
+    <ClCompile Include="dependencies\luau\VM\src\lbuiltins.cpp" />
+    <ClCompile Include="dependencies\luau\VM\src\lcorolib.cpp" />
+    <ClCompile Include="dependencies\luau\VM\src\ldblib.cpp" />
+    <ClCompile Include="dependencies\luau\VM\src\ldebug.cpp" />
+    <ClCompile Include="dependencies\luau\VM\src\ldo.cpp" />
+    <ClCompile Include="dependencies\luau\VM\src\lfunc.cpp" />
+    <ClCompile Include="dependencies\luau\VM\src\lgc.cpp" />
+    <ClCompile Include="dependencies\luau\VM\src\lgcdebug.cpp" />
+    <ClCompile Include="dependencies\luau\VM\src\linit.cpp" />
+    <ClCompile Include="dependencies\luau\VM\src\lmathlib.cpp" />
+    <ClCompile Include="dependencies\luau\VM\src\lmem.cpp" />
+    <ClCompile Include="dependencies\luau\VM\src\lnumprint.cpp" />
+    <ClCompile Include="dependencies\luau\VM\src\lobject.cpp" />
+    <ClCompile Include="dependencies\luau\VM\src\loslib.cpp" />
+    <ClCompile Include="dependencies\luau\VM\src\lperf.cpp" />
+    <ClCompile Include="dependencies\luau\VM\src\lstate.cpp" />
+    <ClCompile Include="dependencies\luau\VM\src\lstring.cpp" />
+    <ClCompile Include="dependencies\luau\VM\src\lstrlib.cpp" />
+    <ClCompile Include="dependencies\luau\VM\src\ltable.cpp" />
+    <ClCompile Include="dependencies\luau\VM\src\ltablib.cpp" />
+    <ClCompile Include="dependencies\luau\VM\src\ltm.cpp" />
+    <ClCompile Include="dependencies\luau\VM\src\ludata.cpp" />
+    <ClCompile Include="dependencies\luau\VM\src\lutf8lib.cpp" />
+    <ClCompile Include="dependencies\luau\VM\src\lvmexecute.cpp" />
+    <ClCompile Include="dependencies\luau\VM\src\lvmload.cpp" />
+    <ClCompile Include="dependencies\luau\VM\src\lvmutils.cpp" />
+    <ClCompile Include="reflection\instance.cpp" />
+    <ClCompile Include="renderer\renderer.cpp" />
+    <ClCompile Include="roblox\update.cpp" />
+    <ClCompile Include="roblox\hooks.cpp" />
+    <ClCompile Include="taskscheduler\taskscheduler.cpp" />
+    <ClCompile Include="utils\utils.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="callcheck\callcheck.hpp" />
+    <ClInclude Include="dependencies\base64.hpp" />
+    <ClInclude Include="dependencies\cpr\api.h" />
+    <ClInclude Include="dependencies\cpr\auth.h" />
+    <ClInclude Include="dependencies\cpr\body.h" />
+    <ClInclude Include="dependencies\cpr\cookies.h" />
+    <ClInclude Include="dependencies\cpr\cpr.h" />
+    <ClInclude Include="dependencies\cpr\cprtypes.h" />
+    <ClInclude Include="dependencies\cpr\curlholder.h" />
+    <ClInclude Include="dependencies\cpr\defines.h" />
+    <ClInclude Include="dependencies\cpr\digest.h" />
+    <ClInclude Include="dependencies\cpr\error.h" />
+    <ClInclude Include="dependencies\cpr\low_speed.h" />
+    <ClInclude Include="dependencies\cpr\max_redirects.h" />
+    <ClInclude Include="dependencies\cpr\multipart.h" />
+    <ClInclude Include="dependencies\cpr\parameters.h" />
+    <ClInclude Include="dependencies\cpr\payload.h" />
+    <ClInclude Include="dependencies\cpr\proxies.h" />
+    <ClInclude Include="dependencies\cpr\response.h" />
+    <ClInclude Include="dependencies\cpr\session.h" />
+    <ClInclude Include="dependencies\cpr\ssl_options.h" />
+    <ClInclude Include="dependencies\cpr\timeout.h" />
+    <ClInclude Include="dependencies\cpr\util.h" />
+    <ClInclude Include="dependencies\curl\curl.h" />
+    <ClInclude Include="dependencies\curl\curlver.h" />
+    <ClInclude Include="dependencies\curl\easy.h" />
+    <ClInclude Include="dependencies\curl\header.h" />
+    <ClInclude Include="dependencies\curl\mprintf.h" />
+    <ClInclude Include="dependencies\curl\multi.h" />
+    <ClInclude Include="dependencies\curl\options.h" />
+    <ClInclude Include="dependencies\curl\stdcheaders.h" />
+    <ClInclude Include="dependencies\curl\system.h" />
+    <ClInclude Include="dependencies\curl\typecheck-gcc.h" />
+    <ClInclude Include="dependencies\curl\urlapi.h" />
+    <ClInclude Include="dependencies\curl\websockets.h" />
+    <ClInclude Include="dependencies\HttpStatus.hpp" />
+    <ClInclude Include="dependencies\imgui\backends\imgui_impl_android.h" />
+    <ClInclude Include="dependencies\imgui\backends\imgui_impl_opengl3.h" />
+    <ClInclude Include="dependencies\imgui\backends\imgui_impl_opengl3_loader.h" />
+    <ClInclude Include="dependencies\imgui\imconfig.h" />
+    <ClInclude Include="dependencies\imgui\imgui.h" />
+    <ClInclude Include="dependencies\imgui\imgui_internal.h" />
+    <ClInclude Include="dependencies\imgui\imstb_rectpack.h" />
+    <ClInclude Include="dependencies\imgui\imstb_textedit.h" />
+    <ClInclude Include="dependencies\imgui\imstb_truetype.h" />
+    <ClInclude Include="dependencies\ixwebsocket\IXBase64.h" />
+    <ClInclude Include="dependencies\ixwebsocket\IXBench.h" />
+    <ClInclude Include="dependencies\ixwebsocket\IXCancellationRequest.h" />
+    <ClInclude Include="dependencies\ixwebsocket\IXConnectionState.h" />
+    <ClInclude Include="dependencies\ixwebsocket\IXDNSLookup.h" />
+    <ClInclude Include="dependencies\ixwebsocket\IXExponentialBackoff.h" />
+    <ClInclude Include="dependencies\ixwebsocket\IXGetFreePort.h" />
+    <ClInclude Include="dependencies\ixwebsocket\IXGzipCodec.h" />
+    <ClInclude Include="dependencies\ixwebsocket\IXHttp.h" />
+    <ClInclude Include="dependencies\ixwebsocket\IXHttpClient.h" />
+    <ClInclude Include="dependencies\ixwebsocket\IXHttpServer.h" />
+    <ClInclude Include="dependencies\ixwebsocket\IXNetSystem.h" />
+    <ClInclude Include="dependencies\ixwebsocket\IXProgressCallback.h" />
+    <ClInclude Include="dependencies\ixwebsocket\IXSelectInterrupt.h" />
+    <ClInclude Include="dependencies\ixwebsocket\IXSelectInterruptEvent.h" />
+    <ClInclude Include="dependencies\ixwebsocket\IXSelectInterruptFactory.h" />
+    <ClInclude Include="dependencies\ixwebsocket\IXSelectInterruptPipe.h" />
+    <ClInclude Include="dependencies\ixwebsocket\IXSetThreadName.h" />
+    <ClInclude Include="dependencies\ixwebsocket\IXSocket.h" />
+    <ClInclude Include="dependencies\ixwebsocket\IXSocketAppleSSL.h" />
+    <ClInclude Include="dependencies\ixwebsocket\IXSocketConnect.h" />
+    <ClInclude Include="dependencies\ixwebsocket\IXSocketFactory.h" />
+    <ClInclude Include="dependencies\ixwebsocket\IXSocketMbedTLS.h" />
+    <ClInclude Include="dependencies\ixwebsocket\IXSocketOpenSSL.h" />
+    <ClInclude Include="dependencies\ixwebsocket\IXSocketServer.h" />
+    <ClInclude Include="dependencies\ixwebsocket\IXSocketTLSOptions.h" />
+    <ClInclude Include="dependencies\ixwebsocket\IXStrCaseCompare.h" />
+    <ClInclude Include="dependencies\ixwebsocket\IXUdpSocket.h" />
+    <ClInclude Include="dependencies\ixwebsocket\IXUniquePtr.h" />
+    <ClInclude Include="dependencies\ixwebsocket\IXUrlParser.h" />
+    <ClInclude Include="dependencies\ixwebsocket\IXUserAgent.h" />
+    <ClInclude Include="dependencies\ixwebsocket\IXUtf8Validator.h" />
+    <ClInclude Include="dependencies\ixwebsocket\IXUuid.h" />
+    <ClInclude Include="dependencies\ixwebsocket\IXWebSocket.h" />
+    <ClInclude Include="dependencies\ixwebsocket\IXWebSocketCloseConstants.h" />
+    <ClInclude Include="dependencies\ixwebsocket\IXWebSocketCloseInfo.h" />
+    <ClInclude Include="dependencies\ixwebsocket\IXWebSocketErrorInfo.h" />
+    <ClInclude Include="dependencies\ixwebsocket\IXWebSocketHandshake.h" />
+    <ClInclude Include="dependencies\ixwebsocket\IXWebSocketHandshakeKeyGen.h" />
+    <ClInclude Include="dependencies\ixwebsocket\IXWebSocketHttpHeaders.h" />
+    <ClInclude Include="dependencies\ixwebsocket\IXWebSocketInitResult.h" />
+    <ClInclude Include="dependencies\ixwebsocket\IXWebSocketMessage.h" />
+    <ClInclude Include="dependencies\ixwebsocket\IXWebSocketMessageType.h" />
+    <ClInclude Include="dependencies\ixwebsocket\IXWebSocketOpenInfo.h" />
+    <ClInclude Include="dependencies\ixwebsocket\IXWebSocketPerMessageDeflate.h" />
+    <ClInclude Include="dependencies\ixwebsocket\IXWebSocketPerMessageDeflateCodec.h" />
+    <ClInclude Include="dependencies\ixwebsocket\IXWebSocketPerMessageDeflateOptions.h" />
+    <ClInclude Include="dependencies\ixwebsocket\IXWebSocketProxyServer.h" />
+    <ClInclude Include="dependencies\ixwebsocket\IXWebSocketSendData.h" />
+    <ClInclude Include="dependencies\ixwebsocket\IXWebSocketSendInfo.h" />
+    <ClInclude Include="dependencies\ixwebsocket\IXWebSocketServer.h" />
+    <ClInclude Include="dependencies\ixwebsocket\IXWebSocketTransport.h" />
+    <ClInclude Include="dependencies\ixwebsocket\IXWebSocketVersion.h" />
+    <ClInclude Include="dependencies\luau\Ast\include\Luau\Ast.h" />
+    <ClInclude Include="dependencies\luau\Ast\include\Luau\Common.h" />
+    <ClInclude Include="dependencies\luau\Ast\include\Luau\Confusables.h" />
+    <ClInclude Include="dependencies\luau\Ast\include\Luau\DenseHash.h" />
+    <ClInclude Include="dependencies\luau\Ast\include\Luau\Lexer.h" />
+    <ClInclude Include="dependencies\luau\Ast\include\Luau\Location.h" />
+    <ClInclude Include="dependencies\luau\Ast\include\Luau\ParseOptions.h" />
+    <ClInclude Include="dependencies\luau\Ast\include\Luau\Parser.h" />
+    <ClInclude Include="dependencies\luau\Ast\include\Luau\ParseResult.h" />
+    <ClInclude Include="dependencies\luau\Ast\include\Luau\StringUtils.h" />
+    <ClInclude Include="dependencies\luau\Ast\include\Luau\TimeTrace.h" />
+    <ClInclude Include="dependencies\luau\Common\include\Luau\Bytecode.h" />
+    <ClInclude Include="dependencies\luau\Common\include\Luau\BytecodeUtils.h" />
+    <ClInclude Include="dependencies\luau\Common\include\Luau\Common.h" />
+    <ClInclude Include="dependencies\luau\Common\include\Luau\DenseHash.h" />
+    <ClInclude Include="dependencies\luau\Common\include\Luau\ExperimentalFlags.h" />
+    <ClInclude Include="dependencies\luau\Compiler\include\Luau\Bytecode.h" />
+    <ClInclude Include="dependencies\luau\Compiler\include\Luau\BytecodeBuilder.h" />
+    <ClInclude Include="dependencies\luau\Compiler\include\Luau\BytecodeUtils.h" />
+    <ClInclude Include="dependencies\luau\Compiler\include\Luau\Compiler.h" />
+    <ClInclude Include="dependencies\luau\VM\src\lbuffer.h" />
+    <ClInclude Include="dependencies\lz4\lz4.h" />
+    <ClInclude Include="environment\environment.hpp" />
+    <ClInclude Include="execution\execution.hpp" />
+    <ClInclude Include="exploit.hpp" />
+    <ClInclude Include="dependencies\dobby\dobby.h" />
+    <ClInclude Include="dependencies\luau\Ast\include\dependencies\luau\Ast.h" />
+    <ClInclude Include="dependencies\luau\Ast\include\dependencies\luau\Common.h" />
+    <ClInclude Include="dependencies\luau\Ast\include\dependencies\luau\Confusables.h" />
+    <ClInclude Include="dependencies\luau\Ast\include\dependencies\luau\DenseHash.h" />
+    <ClInclude Include="dependencies\luau\Ast\include\dependencies\luau\Lexer.h" />
+    <ClInclude Include="dependencies\luau\Ast\include\dependencies\luau\Location.h" />
+    <ClInclude Include="dependencies\luau\Ast\include\dependencies\luau\ParseOptions.h" />
+    <ClInclude Include="dependencies\luau\Ast\include\dependencies\luau\Parser.h" />
+    <ClInclude Include="dependencies\luau\Ast\include\dependencies\luau\ParseResult.h" />
+    <ClInclude Include="dependencies\luau\Ast\include\dependencies\luau\StringUtils.h" />
+    <ClInclude Include="dependencies\luau\Ast\include\dependencies\luau\TimeTrace.h" />
+    <ClInclude Include="dependencies\luau\Compiler\include\luacode.h" />
+    <ClInclude Include="dependencies\luau\Compiler\include\dependencies\luau\Bytecode.h" />
+    <ClInclude Include="dependencies\luau\Compiler\include\dependencies\luau\BytecodeBuilder.h" />
+    <ClInclude Include="dependencies\luau\Compiler\include\dependencies\luau\BytecodeUtils.h" />
+    <ClInclude Include="dependencies\luau\Compiler\include\dependencies\luau\Compiler.h" />
+    <ClInclude Include="dependencies\luau\Compiler\src\BuiltinFolding.h" />
+    <ClInclude Include="dependencies\luau\Compiler\src\Builtins.h" />
+    <ClInclude Include="dependencies\luau\Compiler\src\ConstantFolding.h" />
+    <ClInclude Include="dependencies\luau\Compiler\src\CostModel.h" />
+    <ClInclude Include="dependencies\luau\Compiler\src\TableShape.h" />
+    <ClInclude Include="dependencies\luau\Compiler\src\Types.h" />
+    <ClInclude Include="dependencies\luau\Compiler\src\ValueTracking.h" />
+    <ClInclude Include="dependencies\luau\VM\include\lua.h" />
+    <ClInclude Include="dependencies\luau\VM\include\luaconf.h" />
+    <ClInclude Include="dependencies\luau\VM\include\lualib.h" />
+    <ClInclude Include="dependencies\luau\VM\src\lapi.h" />
+    <ClInclude Include="dependencies\luau\VM\src\lbuiltins.h" />
+    <ClInclude Include="dependencies\luau\VM\src\lbytecode.h" />
+    <ClInclude Include="dependencies\luau\VM\src\lcommon.h" />
+    <ClInclude Include="dependencies\luau\VM\src\ldebug.h" />
+    <ClInclude Include="dependencies\luau\VM\src\ldo.h" />
+    <ClInclude Include="dependencies\luau\VM\src\lfunc.h" />
+    <ClInclude Include="dependencies\luau\VM\src\lgc.h" />
+    <ClInclude Include="dependencies\luau\VM\src\lmem.h" />
+    <ClInclude Include="dependencies\luau\VM\src\lnumutils.h" />
+    <ClInclude Include="dependencies\luau\VM\src\lobject.h" />
+    <ClInclude Include="dependencies\luau\VM\src\lstate.h" />
+    <ClInclude Include="dependencies\luau\VM\src\lstring.h" />
+    <ClInclude Include="dependencies\luau\VM\src\ltable.h" />
+    <ClInclude Include="dependencies\luau\VM\src\ltm.h" />
+    <ClInclude Include="dependencies\luau\VM\src\ludata.h" />
+    <ClInclude Include="dependencies\luau\VM\src\lvm.h" />
+    <ClInclude Include="LuaUI.hpp" />
+    <ClInclude Include="pch.hpp" />
+    <ClInclude Include="reflection\instance.hpp" />
+    <ClInclude Include="renderer\renderer.hpp" />
+    <ClInclude Include="roblox\update.hpp" />
+    <ClInclude Include="roblox\hooks.hpp" />
+    <ClInclude Include="taskscheduler\taskscheduler.hpp" />
+    <ClInclude Include="utils\utils.hpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets" />
+</Project>

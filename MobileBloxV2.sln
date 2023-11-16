@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34024.191
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MobileBloxV2", "NativeLib\MobileBloxV2.vcxproj", "{E9263837-2972-407B-9714-28426B538C4A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Release|ARM = Release|ARM
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E9263837-2972-407B-9714-28426B538C4A}.Release|ARM.ActiveCfg = Release|ARM
+		{E9263837-2972-407B-9714-28426B538C4A}.Release|ARM.Build.0 = Release|ARM
+		{A7FCF4A2-C025-4892-9415-3A08C6283FF8}.Release|ARM.ActiveCfg = Release|ARM
+		{A7FCF4A2-C025-4892-9415-3A08C6283FF8}.Release|ARM.Build.0 = Release|ARM
+		{A7FCF4A2-C025-4892-9415-3A08C6283FF8}.Release|ARM.Deploy.0 = Release|ARM
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {69B68F81-580E-422D-AB12-717A354E5BDE}
+	EndGlobalSection
+EndGlobal
