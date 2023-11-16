@@ -9,7 +9,7 @@
 void sig_handler( int sig ) {
 	LOGE( " [sig_handler] Caught a crash, signal: {%d}", sig );
 	utils::backtrace::logcat( 30 );
-
+    
 	exit( EXIT_FAILURE );
 }
 
