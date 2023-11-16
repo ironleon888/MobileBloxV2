@@ -3,88 +3,88 @@
 // seems like crap to me. x2
 auto reflection::RbxInstance::FindFirstChildOfClass(const std::string& class_name, bool recursive) -> RbxInstance
 {
-	Instance_t* Parent = this->inst_ptr;
+    Instance_t* Parent = this->inst_ptr;
 
-	if ( !Parent->Children ) {
-		return RbxInstance{ nullptr };
-	}
-	
-	const auto children = Parent->Children.get( );
-	for (auto child : *children) {
-		std::string name = child->class_descriptor->class_name;
+    if ( !Parent->Children ) {
+        return RbxInstance{ nullptr };
+    }
+    
+    const auto children = Parent->Children.get( );
+    for (auto child : *children) {
+        std::string name = child->class_descriptor->class_name;
 
-		if (name == class_name) {
-			return RbxInstance{ child.get( ) };
-		}
-		else if (recursive) {
-			auto ChildInst = RbxInstance{ child.get( ) };
-			
-			auto second_child = ChildInst.FindFirstChildOfClass(class_name, recursive);
-			return second_child;
-		}
-	}
+        if (name == class_name) {
+            return RbxInstance{ child.get( ) };
+        }
+        else if (recursive) {
+            auto ChildInst = RbxInstance{ child.get( ) };
+            
+            auto second_child = ChildInst.FindFirstChildOfClass(class_name, recursive);
+            return second_child;
+        }
+    }
 
-	return RbxInstance{ nullptr };
+    return RbxInstance{ nullptr };
 }
 
 auto reflection::RbxInstance::FindFirstChild(const std::string& child_name, bool recursive) -> RbxInstance
 {
-	Instance_t* Parent = this->inst_ptr;
+    Instance_t* Parent = this->inst_ptr;
 
-	if ( !Parent->Children ) {
-		return RbxInstance{ nullptr };
-	}
-	
-	const auto children = Parent->Children.get( );
-	for (auto child : *children) {
-		std::string name = child->name;
+    if ( !Parent->Children ) {
+        return RbxInstance{ nullptr };
+    }
+    
+    const auto children = Parent->Children.get( );
+    for (auto child : *children) {
+        std::string name = child->name;
 
-		if (name == child_name)
-			return RbxInstance{ child.get( ) };
-		else if (recursive) {
-			auto ChildInst = RbxInstance{ child.get( ) };
-			
-			auto second_child = ChildInst.FindFirstChild(child_name, recursive);
-			return second_child;
-		}
-	}
-	
-	return RbxInstance{ nullptr };
+        if (name == child_name)
+            return RbxInstance{ child.get( ) };
+        else if (recursive) {
+            auto ChildInst = RbxInstance{ child.get( ) };
+            
+            auto second_child = ChildInst.FindFirstChild(child_name, recursive);
+            return second_child;
+        }
+    }
+    
+    return RbxInstance{ nullptr };
 }
 
 auto reflection::RbxInstance::GetChildren( ) -> std::vector<RbxInstance>
 {
-	std::vector<RbxInstance> ChildrenList;
+    std::vector<RbxInstance> ChildrenList;
     Instance_t* Parent = this->inst_ptr;
 
-	if ( !Parent->Children ) {
-		return ChildrenList;
-	}
-	
-	const auto children = Parent->Children.get( );
-	for (auto child : *children) {
-		ChildrenList.push_back(RbxInstance{ child.get( ) });
+    if ( !Parent->Children ) {
+        return ChildrenList;
     }
     
-	return ChildrenList;
+    const auto children = Parent->Children.get( );
+    for (auto child : *children) {
+        ChildrenList.push_back(RbxInstance{ child.get( ) });
+    }
+    
+    return ChildrenList;
 }
 
 auto reflection::RbxInstance::GetFullName( ) -> std::string
 {
-	auto inst = this->inst_ptr;
-	
-	if ( inst->Parent )
-		return RbxInstance{ inst->Parent }.GetFullName( ) + "." + this->GetName( );
-	else
-		return this->GetName( );
+    auto inst = this->inst_ptr;
+    
+    if ( inst->Parent )
+        return RbxInstance{ inst->Parent }.GetFullName( ) + "." + this->GetName( );
+    else
+        return this->GetName( );
 }
 
 auto reflection::RbxInstance::GetPropertyDescriptor(std::uintptr_t ktablecode) -> std::uintptr_t*
 {
-	// pseudocode, shoulve kept them unnamed
-	auto inst = this->inst_ptr;
-	auto classdesc = reinterpret_cast<std::uintptr_t>(inst->class_descriptor);
-	
+    // pseudocode, shoulve kept them unnamed
+    auto inst = this->inst_ptr;
+    auto classdesc = reinterpret_cast<std::uintptr_t>(inst->class_descriptor);
+    
     auto descriptors_begin = *reinterpret_cast<std::uintptr_t*>(classdesc + 456);
     auto descriptors_end = *reinterpret_cast<std::uintptr_t*>(classdesc + 460);
     bool is_end = descriptors_end == descriptors_begin;

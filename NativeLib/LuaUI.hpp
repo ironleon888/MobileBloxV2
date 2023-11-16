@@ -66,69 +66,69 @@ Execute.TextWrapped = true
 -- Scripts:
 
 local function BGWS_fake_script() -- Main.DragScript
-	local script = Instance.new('LocalScript', Main)
+    local script = Instance.new('LocalScript', Main)
 
-	--Not made by me, check out this video: https://www.youtube.com/watch?v=z25nyNBG7Js&t=22s
-	--Put this inside of your Frame and configure the speed if you would like.
-	--Enjoy! Credits go to: https://www.youtube.com/watch?v=z25nyNBG7Js&t=22s
+    --Not made by me, check out this video: https://www.youtube.com/watch?v=z25nyNBG7Js&t=22s
+    --Put this inside of your Frame and configure the speed if you would like.
+    --Enjoy! Credits go to: https://www.youtube.com/watch?v=z25nyNBG7Js&t=22s
 
-	local UIS = game:GetService('UserInputService')
-	local frame = script.Parent
-	local dragToggle = nil
-	local dragSpeed = 0.25
-	local dragStart = nil
-	local startPos = nil
+    local UIS = game:GetService('UserInputService')
+    local frame = script.Parent
+    local dragToggle = nil
+    local dragSpeed = 0.25
+    local dragStart = nil
+    local startPos = nil
 
-	local function updateInput(input)
-		local delta = input.Position - dragStart
-		local position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X,
-			startPos.Y.Scale, startPos.Y.Offset + delta.Y)
-		game:GetService('TweenService'):Create(frame, TweenInfo.new(dragSpeed), {Position = position}):Play()
-	end
+    local function updateInput(input)
+        local delta = input.Position - dragStart
+        local position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X,
+            startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+        game:GetService('TweenService'):Create(frame, TweenInfo.new(dragSpeed), {Position = position}):Play()
+    end
 
-	frame.InputBegan:Connect(function(input)
-		if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) then
-			dragToggle = true
-			dragStart = input.Position
-			startPos = frame.Position
-			input.Changed:Connect(function()
-				if input.UserInputState == Enum.UserInputState.End then
-					dragToggle = false
-				end
-			end)
-		end
-	end)
+    frame.InputBegan:Connect(function(input)
+        if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) then
+            dragToggle = true
+            dragStart = input.Position
+            startPos = frame.Position
+            input.Changed:Connect(function()
+                if input.UserInputState == Enum.UserInputState.End then
+                    dragToggle = false
+                end
+            end)
+        end
+    end)
 
-	UIS.InputChanged:Connect(function(input)
-		if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
-			if dragToggle then
-				updateInput(input)
-			end
-		end
-	end)
+    UIS.InputChanged:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+            if dragToggle then
+                updateInput(input)
+            end
+        end
+    end)
 
 end
 coroutine.wrap(BGWS_fake_script)()
 local function NBUT_fake_script() -- Clear.LocalScript
-	local script = Instance.new('LocalScript', Clear)
+    local script = Instance.new('LocalScript', Clear)
 
-	local box = script.Parent.Parent.TextBox
-	local btn = script.Parent
+    local box = script.Parent.Parent.TextBox
+    local btn = script.Parent
 
-	btn.MouseButton1Click:Connect(function()
-		box.Text = "";
-	end)
+    btn.MouseButton1Click:Connect(function()
+        box.Text = "";
+    end)
 end
 coroutine.wrap(NBUT_fake_script)()
 local function OBDPHLQ_fake_script() -- Execute.LocalScript
-	local script = Instance.new('LocalScript', Execute)
+    local script = Instance.new('LocalScript', Execute)
 
-	local box = script.Parent.Parent.TextBox
-	local btn = script.Parent
+    local box = script.Parent.Parent.TextBox
+    local btn = script.Parent
 
-	btn.MouseButton1Click:Connect(function()
-		mb_schedscript(box.Text)
-	end)
+    btn.MouseButton1Click:Connect(function()
+        mb_schedscript(box.Text)
+    end)
 end
 coroutine.wrap(OBDPHLQ_fake_script)()
 )";

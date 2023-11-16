@@ -18,8 +18,8 @@
 // easier access
 namespace exploit_configuration
 {
-	const std::string exploit_name = "MobileBlox";
-	const std::string exploit_luaChunk = "@MB";
-	const std::string exploit_version = "2.0.0";
-	const std::string roblox_exploit_version = "2.600.713"; // lets try to be consistent here
+    const std::string exploit_name = "MobileBlox";
+    const std::string exploit_luaChunk = "@MB";
+    const std::string exploit_version = "2.0.0";
+    const std::string roblox_exploit_version = "2.600.713"; // lets try to be consistent here
 }

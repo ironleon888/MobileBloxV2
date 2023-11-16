@@ -4,10 +4,10 @@
 
 auto renderer::init( ) -> void
 {
-	// ?
+    // ?
 }
 
 auto renderer::render( ) -> void
 {
-	// ?
+    // ?
 }
