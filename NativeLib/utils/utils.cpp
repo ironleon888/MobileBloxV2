@@ -190,6 +190,7 @@ namespace lz4 {
 
 namespace JNI {
     JNIEnv* env = { };
+    jobject GlobalContext = { };
     
     jobject getGlobalContext( )
     {
@@ -204,9 +205,9 @@ namespace JNI {
     
     void set_clipboard_data(const std::string& text)
     {
-       jobject context_obj = getGlobalContext( );
+       //jobject context_obj = getGlobalContext( );
     
-       if( !context_obj )
+       if( !GlobalContext )
        {
            LOGE(" [ JNI ERR ] Failed to get Context. wtf?");
            exit(999);
@@ -237,10 +238,10 @@ namespace JNI {
         auto getSystemService_method = env->GetMethodID(context_class, "getSystemService", "(Ljava/lang/String;)Ljava/lang/Object;");
     
         // Calls
-        auto clipboardService = env->CallObjectMethod(context_obj, getSystemService_method, env->NewStringUTF("clipboard"));
+        auto clipboardService = env->CallObjectMethod(GlobalContext, getSystemService_method, env->NewStringUTF("clipboard"));
         
         auto data = env->NewStringUTF(text.c_str());
-        auto clip = env->CallStaticObjectMethod(clipdata_class, newPlainText_method, env->NewStringUTF("KryClip"), data);
+        auto clip = env->CallStaticObjectMethod(clipdata_class, newPlainText_method, env->NewStringUTF("MBClip"), data);
         env->CallVoidMethod(clipboardService, setPrimaryClip_method, clip);
     }
 }

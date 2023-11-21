@@ -6,6 +6,8 @@
 #include <ixwebsocket/IXNetSystem.h>
 #include <ixwebsocket/IXWebSocket.h>
 
+#include "../../roblox/update.hpp"
+
 // this isnt written by me - nop
 
 class exploit_websocket {
@@ -102,7 +104,7 @@ static int websocket_connect(lua_State* ls)
     exploit_websocket* webSocket = (exploit_websocket*)lua_newuserdata(ls, sizeof(exploit_websocket));
     *webSocket = exploit_websocket{ };
 
-    webSocket->th = lua_newthread(ls);
+    webSocket->th = roblox::functions::rlua_newthread(ls);
     webSocket->threadRef = lua_ref(ls, -1);
     webSocket->webSocket = new ix::WebSocket( );
     webSocket->webSocket->setUrl(url);

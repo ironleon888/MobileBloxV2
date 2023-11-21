@@ -7,7 +7,6 @@
 #include <algorithm>
 #include <string.h>
 
-LUAU_FASTFLAG(LuauFloorDivision)
 
 namespace Luau
 {
@@ -401,7 +400,7 @@ int16_t BytecodeBuilder::addChildFunction(uint32_t fid)
 
 void BytecodeBuilder::emitABC(LuauOpcode op, uint8_t a, uint8_t b, uint8_t c)
 {
-    uint32_t insn = uint32_t((uint8_t)(op * 227)) | (a << 8) | (b << 16) | (c << 24);
+    uint32_t insn = uint32_t(op) | (a << 8) | (b << 16) | (c << 24);
 
     insns.push_back(insn);
     lines.push_back(debugLine);
@@ -409,7 +408,7 @@ void BytecodeBuilder::emitABC(LuauOpcode op, uint8_t a, uint8_t b, uint8_t c)
 
 void BytecodeBuilder::emitAD(LuauOpcode op, uint8_t a, int16_t d)
 {
-    uint32_t insn = uint32_t((uint8_t)(op * 227)) | (a << 8) | (uint16_t(d) << 16);
+    uint32_t insn = uint32_t(op) | (a << 8) | (uint16_t(d) << 16);
 
     insns.push_back(insn);
     lines.push_back(debugLine);
@@ -417,8 +416,8 @@ void BytecodeBuilder::emitAD(LuauOpcode op, uint8_t a, int16_t d)
 
 void BytecodeBuilder::emitE(LuauOpcode op, int32_t e)
 {
-    uint32_t insn = uint32_t((uint8_t)(op * 227)) | (uint32_t(e) << 8);
-    
+    uint32_t insn = uint32_t(op) | (uint32_t(e) << 8);
+
     insns.push_back(insn);
     lines.push_back(debugLine);
 }
@@ -1283,8 +1282,6 @@ void BytecodeBuilder::validateInstructions() const
         case LOP_IDIV:
         case LOP_MOD:
         case LOP_POW:
-            LUAU_ASSERT(FFlag::LuauFloorDivision || op != LOP_IDIV);
-
             VREG(LUAU_INSN_A(insn));
             VREG(LUAU_INSN_B(insn));
             VREG(LUAU_INSN_C(insn));
@@ -1297,8 +1294,6 @@ void BytecodeBuilder::validateInstructions() const
         case LOP_IDIVK:
         case LOP_MODK:
         case LOP_POWK:
-            LUAU_ASSERT(FFlag::LuauFloorDivision || op != LOP_IDIVK);
-
             VREG(LUAU_INSN_A(insn));
             VREG(LUAU_INSN_B(insn));
             VCONST(LUAU_INSN_C(insn), Number);
@@ -1866,8 +1861,6 @@ void BytecodeBuilder::dumpInstruction(const uint32_t* code, std::string& result,
         break;
 
     case LOP_IDIV:
-        LUAU_ASSERT(FFlag::LuauFloorDivision);
-
         formatAppend(result, "IDIV R%d R%d R%d\n", LUAU_INSN_A(insn), LUAU_INSN_B(insn), LUAU_INSN_C(insn));
         break;
 
@@ -1904,8 +1897,6 @@ void BytecodeBuilder::dumpInstruction(const uint32_t* code, std::string& result,
         break;
 
     case LOP_IDIVK:
-        LUAU_ASSERT(FFlag::LuauFloorDivision);
-
         formatAppend(result, "IDIVK R%d R%d K%d [", LUAU_INSN_A(insn), LUAU_INSN_B(insn), LUAU_INSN_C(insn));
         dumpConstant(result, LUAU_INSN_C(insn));
         result.append("]\n");

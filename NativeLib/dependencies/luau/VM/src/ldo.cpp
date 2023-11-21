@@ -51,7 +51,6 @@ l_noret luaD_throw(lua_State* L, int errcode)
     static auto rluau_throw = *reinterpret_cast< decltype(luaD_throw)* >( utils::memory::rebase( "libroblox.so", roblox::addresses::luaD_throw ) );
     rluau_throw( L, errcode );
 }
-
 #else
 class lua_exception : public std::exception
 {
@@ -105,7 +104,6 @@ l_noret luaD_throw(lua_State* L, int errcode)
     static auto rluau_throw = *reinterpret_cast< decltype(luaD_throw)* >( utils::memory::rebase( "libroblox.so", roblox::addresses::luaD_throw ) );
     rluau_throw( L, errcode );
 }
-
 #endif
 
 // }======================================================

@@ -8,14 +8,6 @@
 Messy as fuck i know but welp
 Luau Files modified:
 
-* BytecodeBuilder.cpp
-
-(uint8_t)(op * 227)
-// Encoding is done inside BytecodeBuilder.cpp
-// ABC: uint32_t insn = uint32_t((uint8_t)(op * 227)) | (a << 8) | (b << 16) | (c << 24);
-// AD: uint32_t insn = uint32_t((uint8_t)(op * 227)) | (a << 8) | (uint16_t(d) << 16);
-// E: uint32_t insn = uint32_t((uint8_t)(op * 227)) | (uint32_t(e) << 8);
-
 * luaconf.h -> addresses of luauAPI funcs
 #include "../../../../utils/utils.hpp"
 
@@ -100,50 +92,64 @@ void luaC_barriertable(lua_State* L, Table* t, GCObject* v)
 
 */
 
+/*
+bytecode localscript + 268
+modulescript + 240 
+sharedstr + 16 = data
+
+getbytecode func local/modulescript vftable + 232
+vftable + 252 = getbytecodedata ( derefs the shared str too ) 
+*/
 namespace roblox {
     namespace addresses {
         // LuaState Encryption
         auto rLEnc( std::uintptr_t sc ) -> std::uintptr_t;
         
         // Objs
-        constexpr std::uintptr_t pushinstance_registry = 0x0; // "InvalidInstance"
-        constexpr std::uintptr_t tasksched = 0x0; // "Flags must be loaded before taskscheduler can be used"
-        constexpr std::uintptr_t prop_table = 0x0;
+        constexpr std::uintptr_t tasksched = 0x41DC86C; // "Flags must be loaded before taskscheduler can be used"
+        constexpr std::uintptr_t prop_table = 0x405F324;
         
         // Funcs
-        constexpr std::uintptr_t scriptcontext_resume = 0x0 + 1; // "$Script" // F0 B5 03 AF 2D E9 00 0F 81 B0 2D ED 04 8B AC B0 83 46 E0
-        constexpr std::uintptr_t rbxspawn = 0x0 + 1; // "Spawn function requires 1 argument" // F0 B5 03 AF 2D E9 00 0F 81 B0 2D ED 04 8B AC B0 05 46 D7
-        constexpr std::uintptr_t sandboxthreadandsetidentity = 0x0 + 1; // "Unable to create a new thread for %s" // F0 B5 03 AF 2D E9 00 07 92 46 88 46
-        constexpr std::uintptr_t rlua_pushinstance = 0x0 + 1; // "InvalidInstance"
-        constexpr std::uintptr_t rbx_getthreadcontext = 0x0 + 1; // printidentity
-        constexpr std::uintptr_t rlua_newthread = 0x0 + 1; // "unable to create a new thread for %s"
+        constexpr std::uintptr_t scriptcontext_resume = 0x18F4760 + 1; // "$Script" // F0 B5 03 AF 2D E9 00 0F 81 B0 2D ED 04 8B AC B0 83 46 E0
+        constexpr std::uintptr_t rbxspawn = 0x1932D30 + 1; // "Spawn function requires 1 argument" // F0 B5 03 AF 2D E9 00 0F 81 B0 2D ED 04 8B AC B0 05 46 D7
+        constexpr std::uintptr_t sandboxthreadandsetidentity = 0x18E51E8 + 1; // "Unable to create a new thread for %s" // F0 B5 03 AF 2D E9 00 07 92 46 88 46
+        constexpr std::uintptr_t rlua_pushinstance = 0x18A2668 + 1; // "InvalidInstance"
+        constexpr std::uintptr_t pushinstance_registry = 0x18A20B4 + 1; // "InvalidInstance"
+        static std::uintptr_t pushinstance_registry_rebased = 0x0; // basically rebased pushinst reg, inititiated at funcs::init
+        constexpr std::uintptr_t rbx_getthreadcontext = 0x18DE6B4 + 1; // printidentity
+        constexpr std::uintptr_t rlua_newthread = 0x36CC828 + 1; // "unable to create a new thread for %s"
+        constexpr std::uintptr_t fireclickdetector = 0x23CF824 + 1; // ClickDetectorE vftable + 0xE4 First function call with 3 arguments in the case 1 of the switch.
+        constexpr std::uintptr_t fireproximityprompt = 0x23D3E78 + 1; // "ProximityPrompt_triggered"
+        constexpr std::uintptr_t firetouchinterest = 0x2F44E84 + 1; // "new overlap in different world" function call return
         
         // Func Hooks
-        constexpr std::uintptr_t startscript = 0x0 + 1; // "Script Start" // F0 B5 03 AF 2D E9 00 0F B5 B0 83 46 DF F8 58 0C
-        constexpr std::uintptr_t ongameleave = 0x0 + 1;
-        constexpr std::uintptr_t ongameloaded = 0x0 + 1;
+        constexpr std::uintptr_t startscript = 0x1920834 + 1; // "Script Start" // F0 B5 03 AF 2D E9 00 0F B5 B0 83 46 DF F8 58 0C
+        constexpr std::uintptr_t ongameleave = 0x131ED10 + 1; // "onGameLeaveBegin() SessionReporterState_GameExitRequested placeId:%lld"
+        constexpr std::uintptr_t ongameloaded = 0x131EAC8 + 1; // "onGameLoaded() SessionReporterState_GameLoaded placeId:%lld"
+        constexpr std::uintptr_t jobstart = 0x3A4C48C + 1; // "[FLog::TaskSchedulerRun] JobStart %s"
+        constexpr std::uintptr_t jobstop = 0x3A4C4FC + 1; // "[FLog::TaskSchedulerRun] JobStop %s"
         
         // Now in luaconf.h
         /*
         // luau VM
-        constexpr std::uintptr_t luau_execute = 0x36EBF0C + 1; // luaD_call
+        constexpr std::uintptr_t luau_execute = 0x36DD6D4 + 1; // luaD_call
         
         // luaD_* functions
-        constexpr std::uintptr_t luaD_throw = 0x36E0C8C + 1; // lua_error <- luaL_error // B0 B5 02 AF 05 46 0C 20 0C 46 6D
-        constexpr std::uintptr_t luaD_rawrunprotected = 0x36E0C30 + 1; // luaD_pcall
+        constexpr std::uintptr_t luaD_throw = 0x36D245C + 1; // lua_error <- luaL_error // B0 B5 02 AF 05 46 0C 20 0C 46 6D
+        constexpr std::uintptr_t luaD_rawrunprotected = 0x36D2400 + 1; // luaD_pcall
         
         // luaC_* functions
         // lua_newthread -> B0 B5 02 AF 04 46 00 69 D0
-        constexpr std::uintptr_t luaC_step = 0x36E19D8 + 1; // lua_newthread // F0 B5 03 AF 2D E9 00 0F 81 B0 2D ED 02 8B 84 B0 04 69
-        constexpr std::uintptr_t luaC_barriertable = 0x36E24B4 + 1; // 00 69 43 7D 02
+        constexpr std::uintptr_t luaC_step = 0x36D3168 + 1; // lua_newthread // F0 B5 03 AF 2D E9 00 0F 81 B0 2D ED 02 8B 84 B0 04 69
+        constexpr std::uintptr_t luaC_barriertable = 0x36D3C44 + 1; // 00 69 43 7D 02
         
         // luaV_* functions
-        constexpr std::uintptr_t luaV_gettable = 0x36F57F8 + 1;
-        constexpr std::uintptr_t luaV_settable = 0x36F5910 + 1;
+        constexpr std::uintptr_t luaV_gettable = 0x36E7488 + 1;
+        constexpr std::uintptr_t luaV_settable = 0x36E75A0 + 1;
         
         // Objs
-        constexpr std::uintptr_t luaO_nilobj = 0xCE0270; // any luau push or get or to function
-        constexpr std::uintptr_t dummynode = 0xCE0380; // luaH_getnum <- usually inlined in luaH_get
+        constexpr std::uintptr_t luaO_nilobj = 0xD140C8; // any luau push or get or to function
+        constexpr std::uintptr_t dummynode = 0xD141D8; // luaH_getnum <- usually inlined in luaH_get
         */
     }
     
@@ -208,9 +214,12 @@ namespace roblox {
         inline int ( *rbxspawn )( lua_State* rL ) = nullptr;
         inline lua_State* ( *rlua_newthread )( lua_State* rL ) = nullptr;
         inline std::uintptr_t ( *rbx_getthreadcontext )( lua_State* thread ) = nullptr;
-        inline int ( *scriptcontext_resume )( std::uintptr_t sc, std::uintptr_t** ref, int nargs, int, int ) = nullptr; // now takes a 6th arg, it can be 0 though.
+        inline int ( *scriptcontext_resume )( int unk, std::uintptr_t sc, std::uintptr_t* ref, int nargs, int, int) = nullptr;
         inline std::uintptr_t ( *sandboxthreadandsetidentity )( lua_State* ls, std::uintptr_t identity, std::uintptr_t script ) = nullptr;
         inline std::uintptr_t ( *rlua_pushinstance )( lua_State* ls, std::uintptr_t inst ) = nullptr;
         inline std::uintptr_t ( *rlua_pushinstanceSP )( lua_State* ls, std::weak_ptr<uintptr_t> inst ) = nullptr;
+        inline std::uintptr_t ( *fireclickdetector )( std::uintptr_t detector, float distance, std::uintptr_t player ) = nullptr;
+        inline std::uintptr_t ( *fireproximityprompt )( std::uintptr_t prompt ) = nullptr;
+        inline std::uintptr_t ( *firetouchinterest )( std::uintptr_t world, std::uintptr_t to_touch, std::uintptr_t transmitter, int untouch, int) = nullptr;
     }
 }

@@ -148,21 +148,22 @@
 
 namespace roblox::addresses {
     // luau VM
-    constexpr std::uintptr_t luau_execute = 0x0 + 1; // luaD_call
+    constexpr std::uintptr_t luau_execute = 0x36DD6D4 + 1; // luaD_call
     
     // luaD_* functions
-    constexpr std::uintptr_t luaD_throw = 0x0 + 1; // lua_error <- luaL_error // B0 B5 02 AF 05 46 0C 20 0C 46 6D
-    constexpr std::uintptr_t luaD_rawrunprotected = 0x0 + 1; // luaD_pcall
+    constexpr std::uintptr_t luaD_throw = 0x36D245C + 1; // lua_error <- luaL_error // B0 B5 02 AF 05 46 0C 20 0C 46 6D
+    constexpr std::uintptr_t luaD_rawrunprotected = 0x36D2400 + 1; // luaD_pcall
     
     // luaC_* functions
     // lua_newthread -> B0 B5 02 AF 04 46 00 69 D0
-    constexpr std::uintptr_t luaC_step = 0x0 + 1; // lua_newthread // F0 B5 03 AF 2D E9 00 0F 81 B0 2D ED 02 8B 84 B0 04 69
-    constexpr std::uintptr_t luaC_barriertable = 0x0 + 1; // 00 69 43 7D 02
+    constexpr std::uintptr_t luaC_step = 0x36D3168 + 1; // lua_newthread // F0 B5 03 AF 2D E9 00 0F 81 B0 2D ED 02 8B 84 B0 04 69
+    constexpr std::uintptr_t luaC_barriertable = 0x36D3C44 + 1; // 00 69 43 7D 02
     
     // luaV_* functions
-    constexpr std::uintptr_t luaV_gettable = 0x0 + 1;
-    constexpr std::uintptr_t luaV_settable = 0x0 + 1;
+    constexpr std::uintptr_t luaV_gettable = 0x36E7488 + 1;
+    constexpr std::uintptr_t luaV_settable = 0x36E75A0 + 1;
     
-    constexpr std::uintptr_t luaO_nilobj = 0x0; // any luau push or get or to function
-    constexpr std::uintptr_t dummynode = 0x0; // luaH_getnum <- usually inlined in luaH_get
+    // Objs
+    constexpr std::uintptr_t luaO_nilobj = 0xD140C8; // any luau push or get or to function
+    constexpr std::uintptr_t dummynode = 0xD141D8; // luaH_getnum <- usually inlined in luaH_get
 }

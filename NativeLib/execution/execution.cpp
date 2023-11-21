@@ -3,21 +3,18 @@
 std::uintptr_t job_cache{ };
 std::mutex mutex;
 
-// Encoding is done inside BytecodeBuilder.cpp
-// ABC: uint32_t insn = uint32_t((uint8_t)(op * 227)) | (a << 8) | (b << 16) | (c << 24);
-// AD: uint32_t insn = uint32_t((uint8_t)(op * 227)) | (a << 8) | (uint16_t(d) << 16);
-// E: uint32_t insn = uint32_t((uint8_t)(op * 227)) | (uint32_t(e) << 8);
 auto exploit::execution::execute(const std::string& script) -> void
 {
-    auto bytecode = Luau::compile(script, { 2, 1, 2 }, { true, true });
-
-    LOGD(" [Execution] Called.");
-    
+    // Make a new thread off of our exploit lstate for each ran script
     auto ls = roblox::functions::rlua_newthread(taskscheduler::get_singleton( )->get_ExploitState( ));
     lua_pop(taskscheduler::get_singleton( )->get_ExploitState( ), 1);
-    //auto ls = taskscheduler::get_singleton( )->get_ExploitState( );
     
-    if ( DummyLScript == 0 ) 
+    static auto encoder = bytecode_encoder_t( );
+    auto bytecode = Luau::compile(script, { 2, 1, 2 }, { true, true }, &encoder);
+    
+    // necessary? could move to separate function 
+    /*
+    if ( DummyLScript == 0 )
     {
         lua_getglobal(ls, "Instance");
         lua_getfield(ls, -1, "new");
@@ -31,24 +28,27 @@ auto exploit::execution::execute(const std::string& script) -> void
         lua_pop(ls, 1);
         LOGD(" [Execution] Created dummy LocalScript. 0x%X ", DummyLScript);
     }
-    
-    std::uintptr_t id[2] = { 8, 0 };
-    auto perms = roblox::functions::sandboxthreadandsetidentity(ls, reinterpret_cast<uintptr_t>(id), DummyLScript);
+    */
+    //std::uintptr_t id[2] = { 8, 0 };
+    //auto perms = roblox::functions::sandboxthreadandsetidentity(ls, reinterpret_cast<uintptr_t>(id), DummyLScript);
     roblox::functions::set_identity(ls, 8);
     
+    // task.defer(LClosure)
+    lua_getglobal(ls, "task");
+    lua_getfield(ls, -1, "defer");
     if (luau_load(ls, exploit_configuration::exploit_luaChunk.c_str( ), bytecode.c_str( ), bytecode.size( ), 0) != 0)
     {
-        lua_getglobal(ls, "warn");
-        lua_pushstring(ls, bytecode.c_str( ) + 1);
-        lua_pcall(ls, 1, 0, 0);
+        auto err = lua_tostring(ls, -1);
         
-        LOGE(" [Execution] Error during LClosure Loading: %s", bytecode.c_str( ) + 1);
+        lua_getglobal(ls, "warn");
+        lua_pushstring(ls, err);
+        lua_call(ls, 1, 0);
+        
+        LOGE(" [Execution] Error during LClosure Loading: %s", err);
         return;
     }
     
-    // could get task.spawn or task.defer through lua but meh
-    roblox::functions::rbxspawn(ls);
-    LOGD(" [Execution] Spawned.");
+    lua_pcall(ls, 1, 0, 0); // could add a bit of err handling
     
     /*
     roblox::structs::live_thread_ref* ref = new roblox::structs::live_thread_ref;
@@ -57,7 +57,8 @@ auto exploit::execution::execute(const std::string& script) -> void
     ref->thread_id = lua_ref(ls, -1);
     lua_pop(ls, 1);
     
-    roblox::functions::scriptcontext_resume(taskscheduler::get_singleton( )->get_CurrentSC( ), reinterpret_cast<std::uintptr_t**>( &ref ), 0, 0, 0);
+    std::uintptr_t unk[4] = { 0, 0, 0 };
+    roblox::functions::scriptcontext_resume(reinterpret_cast<uintptr_t>(unk), taskscheduler::get_singleton( )->get_CurrentSC( ), reinterpret_cast<std::uintptr_t*>( &ref ), 0, 0, 0);
     */
 }
 
@@ -66,16 +67,19 @@ auto whsj_step_hook( std::uintptr_t job ) -> std::uintptr_t
     std::unique_lock<std::mutex> guard{ mutex };
     static auto exploit_exec = exploit::execution::get_singleton( );
     
+    // script_queue
     if ( !exploit_exec->squeue_empty( ) )
     {
         guard.unlock( );
         exploit_exec->execute(exploit_exec->squeue_top( ));
     }
-
+    
+    // yield_queue
     if ( !exploit_exec->yqueue_empty( ) )
     {
         auto yielded = exploit_exec->yqueue_top( );
-        roblox::functions::scriptcontext_resume(taskscheduler::get_singleton( )->get_CurrentSC( ), reinterpret_cast<std::uintptr_t**>(&yielded.first), yielded.second, 0, 0);
+        std::uintptr_t unk[4] = { 0, 0, 0 };
+        roblox::functions::scriptcontext_resume(reinterpret_cast<uintptr_t>(unk), taskscheduler::get_singleton( )->get_CurrentSC( ), reinterpret_cast<std::uintptr_t*>(&yielded.first), yielded.second, 0, 0);
     }
 
     return reinterpret_cast<std::uintptr_t(*)(std::uintptr_t)>(job_cache)(job);
@@ -87,14 +91,26 @@ auto exploit::execution::schedule(const std::string& script) -> void
     script_queue.push(script);
 }
 
-auto exploit::execution::hook_script_job( ) -> void
+auto exploit::execution::schedule_thread(lua_State* ls, int nargs) -> void
 {
-    auto TS = taskscheduler::get_singleton( );
+    std::unique_lock<std::mutex> guard{ mutex };
     
+    roblox::structs::live_thread_ref* ref = new roblox::structs::live_thread_ref;
+    ref->th = ls;
+    lua_pushthread(ls);
+    ref->thread_id = lua_ref(ls, -1);
+    lua_pop(ls, 1);
+    
+    auto yielded = std::make_pair(ref, nargs);
+    yield_queue.push(yielded);
+}
+
+auto exploit::execution::hook_script_job( std::uintptr_t job ) -> void
+{
     // if it gets hooked twice then job cache changes to whsj_step_hook and we get a recursive call to nothingness which breaks roblox and our exec
     if ( !job_cache )
     {
-        job_cache = TS->hook_job(TS->get_job_by_name("WaitingHybridScriptsJob"), (void*)&whsj_step_hook);
+        job_cache = taskscheduler::get_singleton( )->hook_job(job, (void*)&whsj_step_hook);
         LOGD(" [hook_script_job] Hooked Job. ");
     }
 }

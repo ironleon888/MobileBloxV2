@@ -62,7 +62,7 @@ static int setscriptable(lua_State* ls)
     
     auto inst = reflection::RbxInstance{ *reinterpret_cast<std::uintptr_t*>(lua_touserdata(ls, 1)) };
     
-    auto prop_table = utils::memory::rebase("libroblox.so", roblox::addresses::prop_table);
+    static auto prop_table = utils::memory::rebase("libroblox.so", roblox::addresses::prop_table);
     auto ktablecode = *reinterpret_cast<std::uintptr_t*>(prop_table + 4 * strhash);
 
     if ( !ktablecode )
@@ -76,8 +76,8 @@ static int setscriptable(lua_State* ls)
 
     auto scriptable = lua_toboolean(ls, 3);
     
-    auto oldScriptable = *reinterpret_cast<std::uintptr_t*>(prop_desc + 32);
-    *reinterpret_cast<std::uintptr_t*>(prop_desc + 32) = (scriptable << 5);
+    auto oldScriptable = *reinterpret_cast<std::uintptr_t*>(prop_desc + 40);
+    *reinterpret_cast<std::uintptr_t*>(prop_desc + 40) = (scriptable << 5);
     
     lua_pushboolean(ls, (bool)((oldScriptable >> 5) & 1));
     return 1;
@@ -96,7 +96,7 @@ static int isscriptable(lua_State* ls)
     
     auto inst = reflection::RbxInstance{ *reinterpret_cast<std::uintptr_t*>(lua_touserdata(ls, 1)) };
     
-    auto prop_table = utils::memory::rebase("libroblox.so", roblox::addresses::prop_table);
+    static auto prop_table = utils::memory::rebase("libroblox.so", roblox::addresses::prop_table);
     auto ktablecode = *reinterpret_cast<std::uintptr_t*>(prop_table + 4 * strhash);
 
     if ( !ktablecode )
@@ -108,7 +108,7 @@ static int isscriptable(lua_State* ls)
     auto prop_desc = *prop_desc_ptr;
     if (!prop_desc) luaL_argerror(ls, 2, "Bad Property.");
     
-    auto scriptable = *reinterpret_cast<std::uintptr_t*>(prop_desc + 32);
+    auto scriptable = *reinterpret_cast<std::uintptr_t*>(prop_desc + 40);
     lua_pushboolean(ls, (bool)((scriptable >> 5) & 1));
     return 1;
 }
@@ -130,7 +130,7 @@ static int gethiddenproperty(lua_State* ls)
     
     auto inst = reflection::RbxInstance{ *reinterpret_cast<std::uintptr_t*>(lua_touserdata(ls, 1)) };
     
-    auto prop_table = utils::memory::rebase("libroblox.so", roblox::addresses::prop_table);
+    static auto prop_table = utils::memory::rebase("libroblox.so", roblox::addresses::prop_table);
     auto ktablecode = *reinterpret_cast<std::uintptr_t*>(prop_table + 4 * strhash);
 
     if ( !ktablecode )
@@ -142,12 +142,12 @@ static int gethiddenproperty(lua_State* ls)
     auto prop_desc = *prop_desc_ptr;
     if (!prop_desc) luaL_argerror(ls, 2, "Bad Property.");
     
-    auto scriptable = *reinterpret_cast<std::uintptr_t*>(prop_desc + 32);
+    auto scriptable = *reinterpret_cast<std::uintptr_t*>(prop_desc + 40);
     if ( (bool)((scriptable >> 5) & 1) )
     {
-        *reinterpret_cast<std::uintptr_t*>(prop_desc + 32) = (1 << 5);
+        *reinterpret_cast<std::uintptr_t*>(prop_desc + 40) = (1 << 5);
         lua_getfield(ls, 1, prop_name);
-        *reinterpret_cast<std::uintptr_t*>(prop_desc + 32) = scriptable;
+        *reinterpret_cast<std::uintptr_t*>(prop_desc + 40) = scriptable;
     }
     else 
     {
@@ -175,7 +175,7 @@ static int sethiddenproperty(lua_State* ls)
     
     auto inst = reflection::RbxInstance{ *reinterpret_cast<std::uintptr_t*>(lua_touserdata(ls, 1)) };
     
-    auto prop_table = utils::memory::rebase("libroblox.so", roblox::addresses::prop_table);
+    static auto prop_table = utils::memory::rebase("libroblox.so", roblox::addresses::prop_table);
     auto ktablecode = *reinterpret_cast<std::uintptr_t*>(prop_table + 4 * strhash);
 
     if ( !ktablecode )
@@ -187,13 +187,13 @@ static int sethiddenproperty(lua_State* ls)
     auto prop_desc = *prop_desc_ptr;
     if (!prop_desc) luaL_argerror(ls, 2, "Bad Property.");
     
-    auto scriptable = *reinterpret_cast<std::uintptr_t*>(prop_desc + 32);
+    auto scriptable = *reinterpret_cast<std::uintptr_t*>(prop_desc + 40);
     if ( (bool)((scriptable >> 5) & 1) )
     {
-        *reinterpret_cast<std::uintptr_t*>(prop_desc + 32) = (1 << 5);
+        *reinterpret_cast<std::uintptr_t*>(prop_desc + 40) = (1 << 5);
         lua_pushvalue(ls, 3);
         lua_setfield(ls, 1, prop_name);
-        *reinterpret_cast<std::uintptr_t*>(prop_desc + 32) = scriptable;
+        *reinterpret_cast<std::uintptr_t*>(prop_desc + 40) = scriptable;
     }
     else 
     {
@@ -204,14 +204,121 @@ static int sethiddenproperty(lua_State* ls)
     return 2;
 }
 
+static int getinstances(lua_State* ls)
+{
+    LOGD(" LuauEnvCall -> getinstances - CallingThread -> %p", ls);
+    
+    lua_newtable(ls);
+    lua_pushlightuserdata(ls, (void*)roblox::addresses::pushinstance_registry_rebased);
+    lua_rawget(ls, -10000);
+    if (lua_istable(ls, -1))
+    {
+        lua_pushnil(ls);
+        if ( lua_next(ls, -2) )
+        {
+            auto idx = 1;
+            do
+                lua_rawseti(ls, -4, idx++);
+            while ( lua_next(ls, -2) );
+        }
+    }
+    lua_pop(ls, 1);
+    return 1;
+}
+
+static int getnilinstances(lua_State* ls)
+{
+    LOGD(" LuauEnvCall -> getnilinstances - CallingThread -> %p", ls);
+    
+    lua_newtable(ls);
+    lua_pushlightuserdata(ls, (void*)roblox::addresses::pushinstance_registry_rebased);
+    lua_rawget(ls, -10000);
+    if (lua_istable(ls, -1))
+    {
+        lua_pushnil(ls);
+        auto idx = 1;
+        while ( lua_next(ls, -2) )
+        {
+            lua_getfield(ls, -1, "Parent");
+			if (lua_isnoneornil(ls, -1)) {
+				lua_pop(ls, 1);
+				lua_rawseti(ls, -4, idx++);
+			}
+			else {
+				lua_pop(ls, 2);// Parent and value
+            }
+        }
+    }
+    lua_pop(ls, 1);
+    return 1;
+}
+
+static int fireclickdetector(lua_State* ls)
+{
+    LOGD(" LuauEnvCall -> fireclickdetector - CallingThread -> %p", ls);
+    
+    luaL_checktype(ls, 1, LUA_TUSERDATA);
+    
+	const auto detector = *reinterpret_cast<std::uintptr_t*>(lua_touserdata(ls, 1));
+	const auto distance = static_cast<float>(luaL_optnumber(ls, 2, 0));
+	
+	lua_getglobal(ls, "game");
+	lua_getfield(ls, -1, "GetService");
+	lua_pushvalue(ls, -2);
+	lua_pushstring(ls, "Players");
+	lua_pcall(ls, 2, 1, 0);
+	lua_getfield(ls, -1, "LocalPlayer");
+	
+	const auto player = *reinterpret_cast<std::uintptr_t*>(lua_touserdata(ls, -1));
+	lua_pop(ls, 3);
+	
+	roblox::functions::fireclickdetector(detector, distance, player);
+    return 0;
+}
+
+static int fireproximityprompt(lua_State* ls)
+{
+    LOGD(" LuauEnvCall -> fireproximityprompt - CallingThread -> %p", ls);
+    
+    const auto prompt = *reinterpret_cast<std::uintptr_t*>(lua_touserdata(ls, 1));
+	roblox::functions::fireproximityprompt(prompt);
+	return 0;
+}
+
+static int firetouchinterest(lua_State* ls)
+{
+    LOGD(" LuauEnvCall -> firetouchinterest - CallingThread -> %p", ls);
+    
+    luaL_checktype(ls, 1, LUA_TUSERDATA);
+	luaL_checktype(ls, 2, LUA_TUSERDATA);
+	luaL_checktype(ls, 3, LUA_TNUMBER);
+	
+	auto p1 = *reinterpret_cast<uintptr_t*>(lua_touserdata(ls, 1));
+	auto p2 = *reinterpret_cast<uintptr_t*>(lua_touserdata(ls, 2));
+	auto untouch = luaL_optnumber(ls, 3, 0);
+	
+	auto to_touch = *reinterpret_cast<std::uintptr_t*>(p1 + 184);
+	auto transmitter = *reinterpret_cast<std::uintptr_t*>(p2 + 184);
+	auto world = *reinterpret_cast<std::uintptr_t*>(to_touch + 376);
+	
+	// might wanna do more reversing on the last argument. 
+    roblox::functions::firetouchinterest(world, to_touch, transmitter, untouch, 0);
+    return 0;
+}
+
 static const luaL_Reg funcs[ ] = {
     {"gethui", gethui},
     {"get_hidden_ui", gethui},
     {"getproperties", getproperties},
-    {"setscriptable", setscriptable},
+/*    {"setscriptable", setscriptable}, // needs fixing.
     {"isscriptable", isscriptable},
     {"gethiddenproperty", gethiddenproperty},
-    {"sethiddenproperty", sethiddenproperty},
+    {"sethiddenproperty", sethiddenproperty}, */
+    {"getinstances", getinstances},
+    {"getnilinstances", getnilinstances},
+    {"fireclickdetector", fireclickdetector},
+    {"fireproximityprompt", fireproximityprompt},
+    {"firetouchinterest", firetouchinterest},
     
     {nullptr, nullptr}
 };

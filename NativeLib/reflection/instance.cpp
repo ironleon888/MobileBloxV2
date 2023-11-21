@@ -85,13 +85,13 @@ auto reflection::RbxInstance::GetPropertyDescriptor(std::uintptr_t ktablecode) -
     auto inst = this->inst_ptr;
     auto classdesc = reinterpret_cast<std::uintptr_t>(inst->class_descriptor);
     
-    auto descriptors_begin = *reinterpret_cast<std::uintptr_t*>(classdesc + 456);
-    auto descriptors_end = *reinterpret_cast<std::uintptr_t*>(classdesc + 460);
+    auto descriptors_begin = *reinterpret_cast<std::uintptr_t*>(classdesc + 460);
+    auto descriptors_end = *reinterpret_cast<std::uintptr_t*>(classdesc + 464);
     bool is_end = descriptors_end == descriptors_begin;
 
     if ( descriptors_end != descriptors_begin )
     {
-        classdesc = *reinterpret_cast<std::uintptr_t*>(classdesc + 472);
+        classdesc = *reinterpret_cast<std::uintptr_t*>(classdesc + 476);
         is_end = classdesc == ktablecode;
     }
     

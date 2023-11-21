@@ -3,7 +3,7 @@
 
 auto roblox::addresses::rLEnc( std::uintptr_t sc ) -> std::uintptr_t
 {
-    return *(std::uintptr_t*)( sc + 268 ) ^ ( sc + 268 );
+    return *(std::uintptr_t*)( sc + 276 ) + ( sc + 276 );
 }
 
 auto roblox::functions::get_tasksched( ) -> std::uintptr_t
@@ -13,6 +13,8 @@ auto roblox::functions::get_tasksched( ) -> std::uintptr_t
         
 void roblox::functions::init( )
 {
+    addresses::pushinstance_registry_rebased = utils::memory::rebase("libroblox.so", addresses::pushinstance_registry);
+    
     rbx_getthreadcontext = reinterpret_cast< decltype( rbx_getthreadcontext ) >( utils::memory::rebase( "libroblox.so", addresses::rbx_getthreadcontext ) );
     scriptcontext_resume = reinterpret_cast< decltype( scriptcontext_resume ) >( utils::memory::rebase( "libroblox.so", addresses::scriptcontext_resume ) );
     sandboxthreadandsetidentity = reinterpret_cast< decltype( sandboxthreadandsetidentity ) >( utils::memory::rebase( "libroblox.so", addresses::sandboxthreadandsetidentity ) );
@@ -20,6 +22,9 @@ void roblox::functions::init( )
     rlua_pushinstanceSP = reinterpret_cast< decltype( rlua_pushinstanceSP ) >(utils::memory::rebase( "libroblox.so", addresses::rlua_pushinstance ) );
     rlua_newthread = reinterpret_cast< decltype( rlua_newthread ) >(utils::memory::rebase( "libroblox.so", addresses::rlua_newthread ) );
     rbxspawn = reinterpret_cast< decltype( rbxspawn ) >(utils::memory::rebase( "libroblox.so", addresses::rbxspawn ) );
+    fireclickdetector = reinterpret_cast< decltype( fireclickdetector ) >(utils::memory::rebase( "libroblox.so", addresses::fireclickdetector ) );
+    fireproximityprompt = reinterpret_cast< decltype( fireproximityprompt ) >(utils::memory::rebase( "libroblox.so", addresses::fireproximityprompt ) );
+    firetouchinterest = reinterpret_cast< decltype( firetouchinterest ) >(utils::memory::rebase( "libroblox.so", addresses::firetouchinterest ) );
 }
 
 auto get_context_level_permissions( int identity ) -> std::uintptr_t
@@ -95,6 +100,7 @@ auto roblox::functions::set_identity( lua_State* ls, int identity ) -> void
           v17 = 12;
           break;
         default:
+          v17 = 0;
           break;
         }
         

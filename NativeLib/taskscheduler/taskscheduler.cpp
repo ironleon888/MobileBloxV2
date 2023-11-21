@@ -3,16 +3,23 @@
 
 uintptr_t new_vftable[7];
 
+/*
+Major issue:
+fails to get new jobs
+resulting in old jobs being gotten
+so game switching fails.
+cause: no idea
+*/
+
 auto taskscheduler::get_jobs( ) -> std::vector<std::uintptr_t>
 {
     std::vector<std::uintptr_t> job_list{ };
     
-    auto TS = roblox::functions::get_tasksched( );
-    auto current_job = *reinterpret_cast<std::uintptr_t**>(TS + 236);
+    auto current_job = *reinterpret_cast<std::uintptr_t**>(roblox::functions::get_tasksched( ) + 236);
     do {
         job_list.push_back(*current_job);
         current_job += 2;
-    } while (current_job != *reinterpret_cast<std::uintptr_t**>(TS + 240));
+    } while (current_job != *reinterpret_cast<std::uintptr_t**>(roblox::functions::get_tasksched( ) + 240));
     
     return job_list;
 }
@@ -50,7 +57,11 @@ auto taskscheduler::get_job_by_name(const std::string& name) -> std::uintptr_t
             job_name = (const char*)(job + 121);
         }
         
-        if ( memcmp(job_name, name.c_str( ), name.size( )) == 0 ) return job;
+        if ( memcmp(job_name, name.c_str( ), name.size( )) == 0 )
+        {
+            LOGD(" Found Job %s, 0x%X", name.c_str( ), job);
+            return job;
+        }
     }
     
     return 0;
@@ -69,15 +80,12 @@ auto taskscheduler::hook_job(uintptr_t job, void* dst) -> std::uintptr_t
 
 auto taskscheduler::get_scriptcontext( ) -> std::uintptr_t
 {
-    auto WHSJ = get_job_by_name("WaitingHybridScriptsJob");
-    return *reinterpret_cast<uintptr_t*>(WHSJ + 360);
+    return *reinterpret_cast<uintptr_t*>(get_job_by_name("WaitingHybridScriptsJob") + 360);
 }
 
 auto taskscheduler::get_mainstate( ) -> lua_State*
 {
-    auto sc = this->get_scriptcontext( );
-    auto rL = roblox::addresses::rLEnc( sc );
-    return reinterpret_cast<lua_State*>( rL ); 
+    return reinterpret_cast<lua_State*>(roblox::addresses::rLEnc(get_scriptcontext( ))); 
 }
 
 auto taskscheduler::find_fpscap( ) -> std::uintptr_t

@@ -10,6 +10,8 @@ namespace exploit::environment
     auto registry_init( lua_State* ls ) -> void;
     auto register_lib( lua_State* ls, const char* libname, const luaL_Reg* lib ) -> void;
     
+    auto mthooks( lua_State* ls ) -> void;
+    
     // Registry Functions for each library, prob wont do all of these because laziness
     auto misc( lua_State* ls ) -> void;
     auto closure( lua_State* ls ) -> void;

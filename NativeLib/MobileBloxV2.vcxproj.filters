@@ -126,6 +126,7 @@
     <ClCompile Include="environment\libraries\debug.cpp" />
     <ClCompile Include="environment\libraries\reflection.cpp" />
     <ClCompile Include="environment\libraries\websocket.cpp" />
+    <ClCompile Include="environment\libraries\mthooks.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.hpp" />

@@ -196,6 +196,11 @@ static int mb_schedscript(lua_State* ls)
     return 0;
 }
 
+static int http_request(lua_State* ls)
+{
+    return 0;
+}
+
 static const luaL_Reg funcs[ ] = {
     {"getgenv", getgenv},
     {"getmtgenv", getmtgenv},

@@ -11,6 +11,7 @@
 #include <lgc.h>
 
 #include "../../roblox/update.hpp"
+#include "../../execution/execution.hpp"
 #include <unordered_set>
 
 static int newcclosure_handler(lua_State* ls)
@@ -62,7 +63,8 @@ static int loadstring(lua_State* ls)
     auto str = luaL_checkstring(ls, 1);
     std::string chunkname = lua_isstring(ls, 2) ? lua_tostring(ls, 2) : utils::random_str(4);
     
-    auto bytecode = Luau::compile(str, { 2, 1, 2 }, { true, true });
+    static auto encoder = exploit::bytecode_encoder_t( );
+    auto bytecode = Luau::compile(str, { 2, 1, 2 }, { true, true }, &encoder);
     if ( luau_load(ls, chunkname.c_str( ), bytecode.c_str( ), bytecode.size( ), 0) ) 
     {
         lua_pushnil(ls);
@@ -100,7 +102,6 @@ static int checkcaller(lua_State* ls)
         return 1;
     }
     
-    // maybe check if script is 0?
     lua_pushboolean(ls, (ES->context_level > 5));
     return 1;
 }
@@ -140,6 +141,7 @@ static int getscriptfromthread(lua_State* ls)
     return 1;
 }
 
+// Needs some fixes: NewCClosures break with this
 static int clonefunction(lua_State* ls)
 {
     LOGD(" LuauEnvCall -> clonefunction - CallingThread -> %p", ls);

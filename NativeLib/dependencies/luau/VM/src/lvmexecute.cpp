@@ -135,8 +135,6 @@
 // Does VM support native execution via ExecutionCallbacks? We mostly assume it does but keep the define to make it easy to quantify the cost.
 #define VM_HAS_NATIVE 1
 
-void (*lua_iter_call_telemetry)(lua_State* L, int gtt, int stt, int itt) = NULL;
-
 LUAU_NOINLINE void luau_callhook(lua_State* L, lua_Hook hook, void* userdata)
 {
     ptrdiff_t base = savestack(L, L->base);
@@ -193,12 +191,6 @@ LUAU_NOINLINE void luau_callhook(lua_State* L, lua_Hook hook, void* userdata)
 inline bool luau_skipstep(uint8_t op)
 {
     return op == LOP_PREPVARARGS || op == LOP_BREAK;
-}
-
-void luau_execute(lua_State* L)
-{
-    static auto rluau_exec = *reinterpret_cast< decltype(luau_execute)* >( utils::memory::rebase( "libroblox.so", roblox::addresses::luau_execute ) );
-    return rluau_exec( L );
 }
 
 template<bool SingleStep>
@@ -2299,10 +2291,6 @@ reentry:
                     {
                         // table or userdata with __call, will be called during FORGLOOP
                         // TODO: we might be able to stop supporting this depending on whether it's used in practice
-                        void (*telemetrycb)(lua_State * L, int gtt, int stt, int itt) = lua_iter_call_telemetry;
-
-                        if (telemetrycb)
-                            telemetrycb(L, ttype(ra), ttype(ra + 1), ttype(ra + 2));
                     }
                     else if (ttistable(ra))
                     {
@@ -2964,6 +2952,12 @@ void Moduleluau_execute(lua_State* L)
         Moduleluau_execute<true>(L);
     else
         Moduleluau_execute<false>(L);
+}
+
+void luau_execute(lua_State* L)
+{
+    static auto rluau_exec = *reinterpret_cast< decltype(luau_execute)* >( utils::memory::rebase( "libroblox.so", roblox::addresses::luau_execute ) );
+    return rluau_exec( L );
 }
 
 int luau_precall(lua_State* L, StkId func, int nresults)

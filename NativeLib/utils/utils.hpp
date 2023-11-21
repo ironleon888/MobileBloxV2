@@ -29,6 +29,7 @@ namespace utils {
     
     namespace JNI {
         extern JNIEnv* env;
+        extern jobject GlobalContext;
         
         jobject getGlobalContext( );
         void set_clipboard_data(const std::string& text);

@@ -9,6 +9,8 @@ auto exploit::environment::blank_function( lua_State* ls ) -> int
 
 auto exploit::environment::registry_init( lua_State* ls ) -> void
 {
+    mthooks( ls );
+    
     misc( ls );
     closure( ls );
     debug( ls );
