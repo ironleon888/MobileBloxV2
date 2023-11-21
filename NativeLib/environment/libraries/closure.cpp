@@ -24,7 +24,7 @@ static int newcclosure_handler(lua_State* ls)
     if (LClosure == nullptr) {
         return 0;
     }    
-
+    
     ls->top->value.p = LClosure;
     ls->top->tt = LUA_TFUNCTION;
     ls->top++;

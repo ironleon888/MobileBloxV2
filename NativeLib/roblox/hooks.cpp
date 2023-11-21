@@ -52,10 +52,10 @@ static std::unordered_set<std::uintptr_t> startedJobs;
 static std::uintptr_t jobstart_original = 0x0;
 static int jobstart_hook( std::uintptr_t job )
 {
-	const auto original = *reinterpret_cast<decltype( jobstart_hook )*>( jobstart_original );
-	
-	// Pseudocode from Roblox's functions. std string stuff 
-	auto job_name = *reinterpret_cast<const char**>(job + 128);
+    const auto original = *reinterpret_cast<decltype( jobstart_hook )*>( jobstart_original );
+    
+    // Pseudocode from Roblox's functions. std string stuff 
+    auto job_name = *reinterpret_cast<const char**>(job + 128);
     if ( !(*(std::uint8_t*)(job + 120) << 31) )
     {
         job_name = (const char*)(job + 121);
@@ -81,10 +81,10 @@ static int jobstart_hook( std::uintptr_t job )
 static std::uintptr_t jobstop_original = 0x0;
 static int jobstop_hook( std::uintptr_t job )
 {
-	const auto original = *reinterpret_cast<decltype( jobstop_hook )*>( jobstop_original );
-	
-	// Pseudocode from Roblox's functions. std string stuff 
-	auto job_name = *reinterpret_cast<const char**>(job + 128);
+    const auto original = *reinterpret_cast<decltype( jobstop_hook )*>( jobstop_original );
+    
+    // Pseudocode from Roblox's functions. std string stuff 
+    auto job_name = *reinterpret_cast<const char**>(job + 128);
     if ( !(*(std::uint8_t*)(job + 120) << 31) )
     {
         job_name = (const char*)(job + 121);

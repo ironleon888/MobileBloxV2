@@ -240,12 +240,12 @@ static int getnilinstances(lua_State* ls)
         while ( lua_next(ls, -2) )
         {
             lua_getfield(ls, -1, "Parent");
-			if (lua_isnoneornil(ls, -1)) {
-				lua_pop(ls, 1);
-				lua_rawseti(ls, -4, idx++);
-			}
-			else {
-				lua_pop(ls, 2);// Parent and value
+            if (lua_isnoneornil(ls, -1)) {
+                lua_pop(ls, 1);
+                lua_rawseti(ls, -4, idx++);
+            }
+            else {
+                lua_pop(ls, 2);// Parent and value
             }
         }
     }
@@ -259,20 +259,20 @@ static int fireclickdetector(lua_State* ls)
     
     luaL_checktype(ls, 1, LUA_TUSERDATA);
     
-	const auto detector = *reinterpret_cast<std::uintptr_t*>(lua_touserdata(ls, 1));
-	const auto distance = static_cast<float>(luaL_optnumber(ls, 2, 0));
-	
-	lua_getglobal(ls, "game");
-	lua_getfield(ls, -1, "GetService");
-	lua_pushvalue(ls, -2);
-	lua_pushstring(ls, "Players");
-	lua_pcall(ls, 2, 1, 0);
-	lua_getfield(ls, -1, "LocalPlayer");
-	
-	const auto player = *reinterpret_cast<std::uintptr_t*>(lua_touserdata(ls, -1));
-	lua_pop(ls, 3);
-	
-	roblox::functions::fireclickdetector(detector, distance, player);
+    const auto detector = *reinterpret_cast<std::uintptr_t*>(lua_touserdata(ls, 1));
+    const auto distance = static_cast<float>(luaL_optnumber(ls, 2, 0));
+    
+    lua_getglobal(ls, "game");
+    lua_getfield(ls, -1, "GetService");
+    lua_pushvalue(ls, -2);
+    lua_pushstring(ls, "Players");
+    lua_pcall(ls, 2, 1, 0);
+    lua_getfield(ls, -1, "LocalPlayer");
+    
+    const auto player = *reinterpret_cast<std::uintptr_t*>(lua_touserdata(ls, -1));
+    lua_pop(ls, 3);
+    
+    roblox::functions::fireclickdetector(detector, distance, player);
     return 0;
 }
 
@@ -281,8 +281,8 @@ static int fireproximityprompt(lua_State* ls)
     LOGD(" LuauEnvCall -> fireproximityprompt - CallingThread -> %p", ls);
     
     const auto prompt = *reinterpret_cast<std::uintptr_t*>(lua_touserdata(ls, 1));
-	roblox::functions::fireproximityprompt(prompt);
-	return 0;
+    roblox::functions::fireproximityprompt(prompt);
+    return 0;
 }
 
 static int firetouchinterest(lua_State* ls)
@@ -290,18 +290,18 @@ static int firetouchinterest(lua_State* ls)
     LOGD(" LuauEnvCall -> firetouchinterest - CallingThread -> %p", ls);
     
     luaL_checktype(ls, 1, LUA_TUSERDATA);
-	luaL_checktype(ls, 2, LUA_TUSERDATA);
-	luaL_checktype(ls, 3, LUA_TNUMBER);
-	
-	auto p1 = *reinterpret_cast<uintptr_t*>(lua_touserdata(ls, 1));
-	auto p2 = *reinterpret_cast<uintptr_t*>(lua_touserdata(ls, 2));
-	auto untouch = luaL_optnumber(ls, 3, 0);
-	
-	auto to_touch = *reinterpret_cast<std::uintptr_t*>(p1 + 184);
-	auto transmitter = *reinterpret_cast<std::uintptr_t*>(p2 + 184);
-	auto world = *reinterpret_cast<std::uintptr_t*>(to_touch + 376);
-	
-	// might wanna do more reversing on the last argument. 
+    luaL_checktype(ls, 2, LUA_TUSERDATA);
+    luaL_checktype(ls, 3, LUA_TNUMBER);
+    
+    auto p1 = *reinterpret_cast<uintptr_t*>(lua_touserdata(ls, 1));
+    auto p2 = *reinterpret_cast<uintptr_t*>(lua_touserdata(ls, 2));
+    auto untouch = luaL_optnumber(ls, 3, 0);
+    
+    auto to_touch = *reinterpret_cast<std::uintptr_t*>(p1 + 184);
+    auto transmitter = *reinterpret_cast<std::uintptr_t*>(p2 + 184);
+    auto world = *reinterpret_cast<std::uintptr_t*>(to_touch + 376);
+    
+    // might wanna do more reversing on the last argument. 
     roblox::functions::firetouchinterest(world, to_touch, transmitter, untouch, 0);
     return 0;
 }

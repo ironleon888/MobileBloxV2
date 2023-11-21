@@ -78,17 +78,17 @@ auto exploit::environment::mthooks( lua_State* ls ) -> void
     lua_getmetatable(ls, -1);
     
     lua_rawgetfield(ls, -1, "__index");
-	const auto index = clvalue(luaA_toobject(ls, -1));
-	index_orig = index->c.f;
-	lua_pop(ls, 1);
+    const auto index = clvalue(luaA_toobject(ls, -1));
+    index_orig = index->c.f;
+    lua_pop(ls, 1);
 
-	lua_rawgetfield(ls, -1, "__namecall");
-	const auto namecall = clvalue(luaA_toobject(ls, -1));
-	namecall_orig = namecall->c.f;
-	lua_pop(ls, 1);
+    lua_rawgetfield(ls, -1, "__namecall");
+    const auto namecall = clvalue(luaA_toobject(ls, -1));
+    namecall_orig = namecall->c.f;
+    lua_pop(ls, 1);
 
-	index->c.f = index_hook;
-	namecall->c.f = namecall_hook;
+    index->c.f = index_hook;
+    namecall->c.f = namecall_hook;
 
-	lua_pop(ls, 2);
+    lua_pop(ls, 2);
 }
